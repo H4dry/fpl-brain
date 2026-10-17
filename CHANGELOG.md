@@ -1,12 +1,27 @@
 # Changelog
 
-## v0.2 — 2026-10-16
+## v0.3 — Data pipeline + Analytics Pro
+- Added persistent SQLite snapshots for FPL bootstrap, fixtures, and optional advanced-stat payloads.
+- Added stale-snapshot fallback with explicit freshness/stale metadata.
+- Added `/api/data/status`, `/api/fpl/history`, and `/api/fpl/advanced-stats`.
+- Added configurable HTTPS advanced-stat provider adapter and field whitelist.
+- Added Analytics data-pipeline monitor and player history chart.
+- Added provider merge by FPL ID or grounded name/team match; missing fields stay blank.
+- Retained clear separation between official FPL feed data and third-party data.
 
-- Added local Python server with `/api/health`, `/api/fpl/bootstrap`, `/api/fpl/fixtures`, and optional `/api/ai/chat`.
-- Added read-only public FPL proxy with a 10-minute in-memory cache and response-shape checks.
-- Added live connection button and honest connection status/failure messages.
-- Added current player search/filter, FPL stats fields, current prices, and next-fixture lookup when available.
-- Added player dropdowns to prefill outgoing/incoming market prices in transfer calculator; actual selling price must still be verified by the manager.
-- Added optional server-side AI configuration via environment variables; no API key in frontend files.
-- Kept xG/xA and tracking heatmaps explicitly marked as not connected.
-- Fixed and checked JavaScript syntax; smoke-tested local HTTP routes. External FPL request failed in the build environment because DNS/network access was unavailable, so live connectivity remains unverified.
+
+## v0.4 — Engine & Transfer Optimizer
+- Added a transparent heuristic for one-gameweek expected points and participation probability. Official FPL ep_next remains a separate comparison column.
+- Added walk-forward historical appearance backtest using each player's prior three appearances as a baseline; reports MAE and bias.
+- Added transfer search against a saved 15-player Team Builder squad, with FPL squad/club limits, bank, free transfers and -4 hits.
+- Added a cached read-only proxy for FPL element-summary history.
+- Forecasts are heuristic and not a trained/validated predictive model.
+
+
+## v0.5 — Prediction Engine + Transfer Optimizer improvements
+- Improved the Prediction Lab table labels and made the model's points-if-playing and availability assumptions explicit. Official `ep_next` remains separate.
+- Historical walk-forward backtest now includes zero-minute gameweeks instead of filtering them out, and reports overall MAE, bias, zero-minute cases, and gameweek-level MAE.
+- Transfer optimizer now compares best legal starting XIs across the selected horizon rather than summing all 15 squad players as if they all scored.
+- Optimizer ranks candidate moves after hit costs and shows a separate next-GW best XI, captain and vice-captain.
+- Fixture model now treats a confirmed blank gameweek as zero fixture contribution when the schedule for that event is available.
+- Search remains bounded and current market prices are still proxies for actual FPL selling prices; recommendations are heuristic, not guarantees.

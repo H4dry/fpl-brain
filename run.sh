@@ -1,3 +1,3 @@
-#!/usr/bin/env sh
+#!/bin/sh
 cd "$(dirname "$0")"
-exec python3 server.py
+python3 server.py
